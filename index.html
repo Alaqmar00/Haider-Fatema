@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+<meta name="theme-color" content="#2E2018" />
+<title>Haider weds Fatema</title>
+<meta name="description" content="A moment worth cherishing — the wedding invitation of Haider and Fatema." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Pinyon+Script&family=Jost:wght@300;400;500&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body class="is-closed">
+
+<!-- ═══════════════ CURTAIN STAGE ═══════════════ -->
+<div class="stage" id="stage" aria-label="Tap the ribbon to open the invitation">
+
+  <div class="stage__room" aria-hidden="true">
+    <div class="stage__glow" id="stageGlow"></div>
+  </div>
+
+  <div class="particles" id="stageParticles" aria-hidden="true"></div>
+
+  <!-- pelmet / valance across the top -->
+  <div class="valance" aria-hidden="true">
+    <span class="valance__fringe"></span>
+  </div>
+
+  <!-- curtains -->
+  <div class="curtain curtain--left" id="curtainLeft" aria-hidden="true">
+    <span class="curtain__sheen"></span>
+    <span class="curtain__motif"></span>
+    <span class="curtain__edge"></span>
+  </div>
+  <div class="curtain curtain--right" id="curtainRight" aria-hidden="true">
+    <span class="curtain__sheen"></span>
+    <span class="curtain__motif"></span>
+    <span class="curtain__edge"></span>
+  </div>
+
+  <!-- centre text + ribbon -->
+  <div class="stage__center" id="stageCenter">
+    <p class="stage__kicker">A Moment Worth Cherishing</p>
+
+    <p class="stage__names">
+      <span class="stage__name">Haider</span>
+      <span class="stage__weds">weds</span>
+      <span class="stage__name">Fatema</span>
+    </p>
+
+    <button class="ribbon" id="ribbon" type="button" aria-label="Open the invitation">
+      <span class="ribbon__tail ribbon__tail--l"></span>
+      <span class="ribbon__tail ribbon__tail--r"></span>
+      <span class="ribbon__loop ribbon__loop--l"></span>
+      <span class="ribbon__loop ribbon__loop--r"></span>
+      <span class="ribbon__knot"></span>
+    </button>
+
+    <p class="stage__hint" id="stageHint">Untie the ribbon</p>
+  </div>
+</div>
+
+<!-- ═══════════════ INVITATION ═══════════════ -->
+<main class="invite" id="invite" hidden>
+
+  <!-- ── the card ── -->
+  <section class="sheet sheet--hero reveal" id="top">
+    <article class="card card--hero">
+      <div class="card__rule" aria-hidden="true"></div>
+
+      <p class="bismillah">Bismillah-ir-Rahman-ir-Raheem</p>
+
+      <p class="blessing">
+        By the grace of Allah, Vasila-e-Panjatan Pak (A.S), Eternal blessings of
+        Dr.&nbsp;Syedna Mohammed Burhanuddin (R.A) &amp; Dua Mubarak of
+        Syedna Aali Qadar Mufaddal Saifuddin (T.U.S)
+      </p>
+
+      <p class="request">
+        request your gracious presence on the auspicious occasion of
+        <span class="request__occasion">Wedding Ceremony</span>
+      </p>
+
+      <div class="couple">
+        <h1 class="couple__name">Haider</h1>
+        <p class="couple__weds"><span>weds</span></p>
+        <h1 class="couple__name">Fatema</h1>
+      </div>
+
+      <div class="lineage">
+        <p class="lineage__block">
+          <span class="lineage__role">Son of</span>
+          Mr. Hussain Safdar Hussain Thekedar<br />
+          and Mrs. Ajab Hussain Thekedar
+        </p>
+        <span class="lineage__sep" aria-hidden="true"></span>
+        <p class="lineage__block">
+          <span class="lineage__role">Daughter of</span>
+          Mr. Aliasger Jaferali Chikhly<br />
+          and Mrs. Sherebanu Aliasger Chikhly
+        </p>
+      </div>
+
+      <p class="arabic arabic--lg" lang="ar" dir="rtl">ان شَاءَ اللَّهُ</p>
+      <div class="card__rule" aria-hidden="true"></div>
+    </article>
+  </section>
+
+  <!-- ── special request ── -->
+  <section class="sheet reveal">
+    <article class="card card--request">
+      <span class="corner corner--tl" aria-hidden="true"></span>
+      <span class="corner corner--tr" aria-hidden="true"></span>
+      <span class="corner corner--bl" aria-hidden="true"></span>
+      <span class="corner corner--br" aria-hidden="true"></span>
+      <h2 class="card__title">Special Request</h2>
+      <p class="request__name">Kussay Amatullah Hassan</p>
+    </article>
+  </section>
+
+  <!-- ── countdown ── -->
+  <section class="sheet reveal">
+    <div class="countdown" id="countdown">
+      <h2 class="section__title">Counting the days</h2>
+      <div class="countdown__grid" id="countdownGrid"></div>
+      <p class="countdown__note" id="countdownNote"></p>
+    </div>
+  </section>
+
+  <!-- ── events + timeline ── -->
+  <section class="sheet reveal" id="events">
+    <h2 class="section__title">Three days of celebration</h2>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <!-- ── location ── -->
+  <section class="sheet reveal" id="location">
+    <article class="card card--plain">
+      <h2 class="card__title">Where to find us</h2>
+      <div id="locationBody"></div>
+    </article>
+  </section>
+
+  <!-- ── rsvp ── -->
+  <section class="sheet reveal" id="rsvp">
+    <article class="card card--plain">
+      <h2 class="card__title">RSVP</h2>
+      <div id="rsvpBody"></div>
+    </article>
+  </section>
+
+  <!-- ── contact ── -->
+  <section class="sheet reveal" id="contact">
+    <article class="card card--plain">
+      <h2 class="card__title">Contact</h2>
+      <div id="contactBody"></div>
+    </article>
+  </section>
+
+  <!-- ── closing ── -->
+  <footer class="closing reveal">
+    <span class="closing__ornament" aria-hidden="true"></span>
+    <p class="closing__lead">With love and duas,</p>
+    <p class="closing__names">Haider &amp; Fatema</p>
+    <p class="arabic arabic--lg closing__arabic" lang="ar" dir="rtl">ان شَاءَ اللَّهُ</p>
+  </footer>
+</main>
+
+<!-- ═══════════════ CONTROLS ═══════════════ -->
+<button class="control control--sound" id="soundBtn" type="button" hidden aria-pressed="true" aria-label="Mute music">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-on" d="M4 9v6h4l5 4V5L8 9H4z"/><path class="ico-on" d="M16.5 8.5a5 5 0 010 7"/><path class="ico-off" d="M4 9v6h4l5 4V5L8 9H4z"/><path class="ico-off" d="M17 9.5l4 5m0-5l-4 5"/></svg>
+</button>
+
+<button class="control control--top" id="topBtn" type="button" hidden aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6m0 0l-6 6m6-6l6 6"/></svg>
+</button>
+
+<audio id="music" preload="none" loop playsinline></audio>
+
+<script src="js/config.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
