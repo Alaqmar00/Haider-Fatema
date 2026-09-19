@@ -267,12 +267,14 @@ img{ max-width:100%; height:auto; }
 
 .stage__hint{
   margin:0;
-  font-size:.66rem; letter-spacing:.3em; text-indent:.3em;
+  font-family:var(--sans); font-weight:500;
+  font-size:.72rem; letter-spacing:.3em; text-indent:.3em;
   text-transform:uppercase;
-  color:rgba(244,234,218,.72);
+  color:var(--champagne);
+  text-shadow:0 1px 6px rgba(36,26,18,.85), 0 0 14px rgba(36,26,18,.5);
   animation: pulse 3s ease-in-out infinite;
 }
-@keyframes pulse{ 0%,100%{opacity:.45} 50%{opacity:.95} }
+@keyframes pulse{ 0%,100%{opacity:.68} 50%{opacity:1} }
 
 /* ── particles ── */
 .particles{ position:absolute; inset:0; z-index:5; pointer-events:none; overflow:hidden; }
@@ -351,10 +353,11 @@ img{ max-width:100%; height:auto; }
 
 .bismillah{
   margin: clamp(1.4rem,5vw,2rem) 0 0;
-  font-family:var(--serif); font-style:italic;
-  font-size:clamp(1.02rem,4.4vw,1.28rem);
+  font-family:var(--arabic);
+  font-size:clamp(1.15rem,5vw,1.55rem);
+  line-height:1.9;
   color:var(--gold-deep);
-  letter-spacing:.015em;
+  letter-spacing:0;
 }
 
 .blessing{
