@@ -1,77 +1,59 @@
 /* ══════════════════════════════════════════════════════════════
    EDIT ONLY THIS FILE.
 
-   Every empty string below is a detail I did not have. Copy each
-   one across from your original wedding website exactly as it is
-   written there. Anything you leave empty is simply not shown —
-   nothing is guessed or filled in for you.
+   Anything left empty is simply not shown — nothing is guessed
+   or filled in for you.
    ══════════════════════════════════════════════════════════════ */
 
 const WEDDING = {
 
-  /* ── the wedding date the countdown runs to ──────────────────
-     Format: "YYYY-MM-DDTHH:MM:SS+05:30"  (24-hour clock, IST)
-     Example shape only — replace with your real first-event date:
-     "2027-01-14T19:30:00+05:30"
-     Leave as "" and the countdown block hides itself.            */
-  countdownTo: "",
-  countdownLabel: "",   // e.g. "until the Nikah" — optional
+  /* ── the wedding date the countdown runs to ────────────────── */
+  countdownTo: "2026-10-23T09:53:00+05:30",
+  countdownLabel: "until the celebrations begin",
 
 
   /* ── the three days ──────────────────────────────────────────
-     Fill each event from your existing site. Any field left empty
-     is dropped from the card.
-
-     start / end are only used by the "Add to calendar" button.
-     Same format as countdownTo. If you leave start empty, the
-     calendar button is not shown for that event.                 */
+     start / end (optional) are only used by the "Add to calendar"
+     button — same date format as countdownTo. Leave start empty
+     to hide that event's calendar button.                        */
   events: [
     {
-      day:     "",   // e.g. "Day One — Friday"
-      name:    "",   // event name exactly as on the original site
-      date:    "",   // e.g. "14 January 2027"
-      time:    "",   // e.g. "7:30 PM onwards"
+      day:     "Day One",
+      date:    "23 October 2026 · Friday",
+      session: "Morning Programme",
+      name:    "Mama Musaala & Katha Ni Rasam",
+      time:    "9:53 A.M.",
+      note:    "",
+      venue:   "",
+      address: "",
+      start:   "2026-10-23T09:53:00+05:30",
+      end:     ""
+    },
+    {
+      day:     "Day Two",
+      date:    "24 October 2026 · Saturday",
+      session: "Evening Programme",
+      name:    "Shehar Gasht",
+      note:    "(Procession)",
+      time:    "",
       venue:   "",
       address: "",
       start:   "",
       end:     ""
     },
     {
-      day: "", name: "", date: "", time: "", venue: "", address: "", start: "", end: ""
-    },
-    {
-      day: "", name: "", date: "", time: "", venue: "", address: "", start: "", end: ""
+      day:     "Day Three",
+      date:    "25 October 2026 · Sunday",
+      session: "Evening Programme",
+      name:    "Valeema Nu Jaman & Musafo",
+      time:    "",
+      note:    "",
+      venue:   "",
+      address: "",
+      start:   "",
+      end:     ""
     }
   ],
-
-
-  /* ── location section ───────────────────────────────────────
-     mapEmbedUrl: on Google Maps → Share → Embed a map → copy the
-     src="..." value out of the iframe and paste it here.
-     mapLinkUrl : the plain Google Maps link for the directions button. */
-  location: {
-    venue:       "",
-    address:     "",
-    mapEmbedUrl: "",
-    mapLinkUrl:  ""
-  },
-
-
-  /* ── RSVP ────────────────────────────────────────────────────
-     note     : any wording from the original site.
-     contacts : [{ name: "", phone: "" }] — phone may be a plain
-                number or a wa.me link. Empty array shows nothing. */
-  rsvp: {
-    note:     "",
-    contacts: []
-  },
-
-
-  /* ── contact section ─────────────────────────────────────── */
-  contact: {
-    note:     "",
-    contacts: []
-  },
 
 
   /* ── music ───────────────────────────────────────────────────

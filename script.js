@@ -168,7 +168,6 @@
 
     list.innerHTML = rows.map(function (e, i) {
       var meta = "";
-      if (has(e.date))    meta += "<li><b>Date</b><span>" + esc(e.date) + "</span></li>";
       if (has(e.time))    meta += "<li><b>Time</b><span>" + esc(e.time) + "</span></li>";
       if (has(e.venue))   meta += "<li><b>Venue</b><span>" + esc(e.venue) + "</span></li>";
       if (has(e.address)) meta += "<li><b>Address</b><span>" + esc(e.address) + "</span></li>";
@@ -180,9 +179,11 @@
       return '<li class="tl-item">' +
         '<article class="event">' +
           (has(e.day) ? '<span class="event__day">' + esc(e.day) + "</span>" : "") +
-          (has(e.name) ? '<h3 class="event__name">' + esc(e.name) + "</h3>" : "") +
+          (has(e.date) ? '<span class="event__date">' + esc(e.date) + "</span>" : "") +
+          (has(e.session) ? '<span class="event__session">' + esc(e.session) + "</span>" : "") +
+          (has(e.name) ? '<h3 class="event__name">' + esc(e.name) + (has(e.note) ? ' <span class="event__note">' + esc(e.note) + "</span>" : "") + "</h3>" : "") +
           '<span class="event__flourish"></span>' +
-          '<ul class="event__meta">' + meta + "</ul>" +
+          (meta ? '<ul class="event__meta">' + meta + "</ul>" : "") +
           cal +
         "</article></li>";
     }).join("");
@@ -226,41 +227,6 @@
     a.remove();
     setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
   }
-
-  /* ───────────── location / rsvp / contact ───────────── */
-  function lines(parts) {
-    return parts.filter(has).map(function (t) { return '<p class="info">' + esc(t) + "</p>"; }).join("");
-  }
-  function people(arr) {
-    if (!arr || !arr.length) return "";
-    return arr.filter(function (c) { return has(c.name) || has(c.phone); }).map(function (c) {
-      var tel = has(c.phone)
-        ? ' — <a href="' + (/^https?:/.test(c.phone) ? esc(c.phone) : "tel:" + esc(c.phone.replace(/\s+/g, ""))) + '">' + esc(c.phone) + "</a>"
-        : "";
-      return '<p class="info">' + esc(c.name || "") + tel + "</p>";
-    }).join("");
-  }
-  function fill(id, html, fallback) {
-    var el = $(id);
-    el.innerHTML = html || '<p class="pending">' + fallback + "</p>";
-  }
-
-  var L = WEDDING.location || {};
-  var locHtml = lines([L.venue, L.address]);
-  if (has(L.mapEmbedUrl)) {
-    locHtml += '<div class="map-frame"><iframe src="' + esc(L.mapEmbedUrl) +
-      '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe></div>';
-  }
-  if (has(L.mapLinkUrl)) {
-    locHtml += '<p class="info"><a class="btn" href="' + esc(L.mapLinkUrl) + '" target="_blank" rel="noopener">Open directions</a></p>';
-  }
-  fill("#locationBody", locHtml, "Add the venue and map link in js/config.js.");
-
-  var R = WEDDING.rsvp || {};
-  fill("#rsvpBody", lines([R.note]) + people(R.contacts), "Add your RSVP wording in js/config.js.");
-
-  var C = WEDDING.contact || {};
-  fill("#contactBody", lines([C.note]) + people(C.contacts), "Add contact details in js/config.js.");
 
   /* ───────────── back to top ───────────── */
   topBtn.hidden = false;

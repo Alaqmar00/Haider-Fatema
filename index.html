@@ -46,19 +46,29 @@
   <div class="stage__center" id="stageCenter">
     <p class="stage__kicker">A Moment Worth Cherishing</p>
 
-    <p class="stage__names">
-      <span class="stage__name">Haider</span>
-      <span class="stage__weds">weds</span>
-      <span class="stage__name">Fatema</span>
-    </p>
+    <div class="stage__namebar">
+      <span class="stage__name stage__name--l">Haider</span>
 
-    <button class="ribbon" id="ribbon" type="button" aria-label="Open the invitation">
-      <span class="ribbon__tail ribbon__tail--l"></span>
-      <span class="ribbon__tail ribbon__tail--r"></span>
-      <span class="ribbon__loop ribbon__loop--l"></span>
-      <span class="ribbon__loop ribbon__loop--r"></span>
-      <span class="ribbon__knot"></span>
-    </button>
+      <button class="ribbon" id="ribbon" type="button" aria-label="Open the invitation">
+        <svg class="ribbon__svg" viewBox="0 0 160 108" aria-hidden="true">
+          <defs>
+            <linearGradient id="ribbonFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"  class="rg-a"/>
+              <stop offset="45%" class="rg-b"/>
+              <stop offset="100%" class="rg-c"/>
+            </linearGradient>
+          </defs>
+          <path class="ribbon__tail ribbon__tail--l" d="M70,56 L52,102 L74,86 Z"/>
+          <path class="ribbon__tail ribbon__tail--r" d="M90,56 L108,102 L86,86 Z"/>
+          <path class="ribbon__loop ribbon__loop--l" d="M80,52 C64,16 16,8 6,32 C-4,54 28,76 80,54 Z"/>
+          <path class="ribbon__loop ribbon__loop--r" d="M80,52 C96,16 144,8 154,32 C164,54 132,76 80,54 Z"/>
+          <rect class="ribbon__knot" x="66" y="41" width="28" height="24" rx="7"/>
+        </svg>
+        <span class="ribbon__weds">weds</span>
+      </button>
+
+      <span class="stage__name stage__name--r">Fatema</span>
+    </div>
 
     <p class="stage__hint" id="stageHint">Untie the ribbon</p>
   </div>
@@ -137,36 +147,16 @@
     <ol class="timeline" id="timeline"></ol>
   </section>
 
-  <!-- ── location ── -->
-  <section class="sheet reveal" id="location">
-    <article class="card card--plain">
-      <h2 class="card__title">Where to find us</h2>
-      <div id="locationBody"></div>
-    </article>
-  </section>
-
-  <!-- ── rsvp ── -->
-  <section class="sheet reveal" id="rsvp">
-    <article class="card card--plain">
-      <h2 class="card__title">RSVP</h2>
-      <div id="rsvpBody"></div>
-    </article>
-  </section>
-
-  <!-- ── contact ── -->
-  <section class="sheet reveal" id="contact">
-    <article class="card card--plain">
-      <h2 class="card__title">Contact</h2>
-      <div id="contactBody"></div>
-    </article>
-  </section>
-
   <!-- ── closing ── -->
   <footer class="closing reveal">
     <span class="closing__ornament" aria-hidden="true"></span>
     <p class="closing__lead">With love and duas,</p>
     <p class="closing__names">Haider &amp; Fatema</p>
     <p class="arabic arabic--lg closing__arabic" lang="ar" dir="rtl">ان شَاءَ اللَّهُ</p>
+    <p class="closing__credit">
+      Created by
+      <a href="https://www.instagram.com/vision.murtaza?stkn=MXZ0MXVoNGU5c3hhbQ==" target="_blank" rel="noopener">@vision.murtaza</a>
+    </p>
   </footer>
 </main>
 
