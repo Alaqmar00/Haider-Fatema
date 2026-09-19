@@ -132,22 +132,19 @@
 
   /* ───────────── the curtain reveal ───────────── */
   var opened = false;
-  var unlocked = false;
-
-  function unlockPage() {
-    if (unlocked) return;
-    unlocked = true;
-    document.body.classList.remove("is-closed");
-    window.scrollTo(0, 0);
-    observeReveals();
-    stage.classList.add("is-gone");
-    stage.style.pointerEvents = "none"; // hand touch control to the page the instant scrolling unlocks
-    showScrollHint();
-  }
 
   function openStage() {
     if (opened) return;
     opened = true;
+
+    // Unlock scrolling and hand touch control to the page the INSTANT the
+    // ribbon is tapped — not after the curtains finish animating. That gap
+    // was the actual bug: the stage overlay was still catching the first
+    // scroll/touch while it waited for the slide to finish.
+    stage.style.pointerEvents = "none";
+    document.body.classList.remove("is-closed");
+    window.scrollTo(0, 0);
+    observeReveals();
 
     stage.classList.add("is-opening");
     startMusic();
@@ -158,25 +155,24 @@
       requestAnimationFrame(function () { invite.classList.add("is-in"); });
     });
 
-    if (reduced) {
-      setTimeout(unlockPage, 300);
-      return;
-    }
-
-    // unlock the instant the curtain finishes its own slide — no guessed
-    // delay, so there is never a gap where the hidden stage still eats
-    // the first scroll/touch.
+    // purely cosmetic from here — remove the (already-inert) stage from
+    // the DOM once its slide animation has actually finished
     var curtainLeft = $("#curtainLeft");
-    var done = false;
-    function onDone(e) {
+    var settled = false;
+    function onSettled(e) {
       if (e && e.propertyName !== "transform") return;
-      if (done) return;
-      done = true;
-      curtainLeft.removeEventListener("transitionend", onDone);
-      unlockPage();
+      if (settled) return;
+      settled = true;
+      curtainLeft.removeEventListener("transitionend", onSettled);
+      stage.classList.add("is-gone");
+      showScrollHint();
     }
-    curtainLeft.addEventListener("transitionend", onDone);
-    setTimeout(onDone, 3400); // fallback in case transitionend never fires
+    if (reduced) {
+      setTimeout(onSettled, 250);
+    } else {
+      curtainLeft.addEventListener("transitionend", onSettled);
+      setTimeout(onSettled, 3400); // fallback in case transitionend never fires
+    }
   }
 
   ribbon.addEventListener("click", openStage);
