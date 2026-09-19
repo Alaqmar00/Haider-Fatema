@@ -132,6 +132,19 @@
 
   /* ───────────── the curtain reveal ───────────── */
   var opened = false;
+  var unlocked = false;
+
+  function unlockPage() {
+    if (unlocked) return;
+    unlocked = true;
+    document.body.classList.remove("is-closed");
+    window.scrollTo(0, 0);
+    observeReveals();
+    stage.classList.add("is-gone");
+    stage.style.pointerEvents = "none"; // hand touch control to the page the instant scrolling unlocks
+    showScrollHint();
+  }
+
   function openStage() {
     if (opened) return;
     opened = true;
@@ -145,19 +158,52 @@
       requestAnimationFrame(function () { invite.classList.add("is-in"); });
     });
 
-    var wait = reduced ? 300 : 2200;
-    setTimeout(function () {
-      document.body.classList.remove("is-closed");
-      window.scrollTo(0, 0);
-      observeReveals();
-    }, wait);
+    if (reduced) {
+      setTimeout(unlockPage, 300);
+      return;
+    }
 
-    setTimeout(function () { stage.classList.add("is-gone"); }, reduced ? 500 : 3400);
+    // unlock the instant the curtain finishes its own slide — no guessed
+    // delay, so there is never a gap where the hidden stage still eats
+    // the first scroll/touch.
+    var curtainLeft = $("#curtainLeft");
+    var done = false;
+    function onDone(e) {
+      if (e && e.propertyName !== "transform") return;
+      if (done) return;
+      done = true;
+      curtainLeft.removeEventListener("transitionend", onDone);
+      unlockPage();
+    }
+    curtainLeft.addEventListener("transitionend", onDone);
+    setTimeout(onDone, 3400); // fallback in case transitionend never fires
   }
 
   ribbon.addEventListener("click", openStage);
   ribbon.addEventListener("touchend", function (e) { e.preventDefault(); openStage(); }, { passive: false });
   stage.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
+
+  /* ───────────── scroll-down hint ───────────── */
+  function showScrollHint() {
+    var hint = $("#scrollHint");
+    if (!hint || reduced) return;
+    hint.hidden = false;
+
+    var hideTimer;
+    function hide() {
+      clearTimeout(hideTimer);
+      window.removeEventListener("scroll", onScroll);
+      hint.classList.remove("is-on");
+      setTimeout(function () { hint.hidden = true; }, 650);
+    }
+    function onScroll() { hide(); }
+
+    requestAnimationFrame(function () {
+      hint.classList.add("is-on");
+      hideTimer = setTimeout(hide, 3000);
+      window.addEventListener("scroll", onScroll, { passive: true, once: true });
+    });
+  }
 
   /* ───────────── scroll reveals ───────────── */
   function observeReveals() {
