@@ -17,7 +17,7 @@
   --coffee:     #241A12;
 
   --ink:        #3E2C1E;
-  --ink-soft:   #6B5440;
+  --ink-soft:   #52391F;
   --label:      #8A6E48;
 
   --serif:  "Cormorant Garamond", "Times New Roman", serif;
@@ -41,7 +41,7 @@ body{
   background: var(--cream);
   color: var(--ink);
   font-family: var(--sans);
-  font-weight:300;
+  font-weight:400;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
@@ -664,6 +664,11 @@ img{ max-width:100%; height:auto; }
 }
 .control svg{ width:19px; height:19px; fill:none; stroke:var(--gold-deep); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
 .control--sound{ right:16px; bottom:calc(16px + env(safe-area-inset-bottom)); }
+
+.yt-audio-host{
+  position:fixed; left:-9999px; top:-9999px;
+  width:2px; height:2px; opacity:0; pointer-events:none;
+}
 .control--top{ right:16px; bottom:calc(70px + env(safe-area-inset-bottom)); opacity:0; pointer-events:none; }
 .control--top.is-on{ opacity:1; pointer-events:auto; }
 

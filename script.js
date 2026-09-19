@@ -40,32 +40,94 @@
   }
   if (!reduced) motes($("#stageParticles"), 34);
 
-  /* ───────────── music ───────────── */
+  /* ───────────── music (YouTube stream, or local file fallback) ───────────── */
   var muted = false;
-  function startMusic() {
+  var target = typeof WEDDING.musicVolume === "number" ? WEDDING.musicVolume : 0.55;
+  var wantsPlay = false;
+
+  function youtubeId(url) {
+    if (!has(url)) return null;
+    var m = url.match(/[?&]v=([\w-]{11})/) || url.match(/youtu\.be\/([\w-]{11})/) || url.match(/\/embed\/([\w-]{11})/);
+    return m ? m[1] : null;
+  }
+  var ytId = youtubeId(WEDDING.youtubeMusicUrl);
+
+  function fadeTo(setVol, endValue, ms) {
+    var t0 = Date.now();
+    var start = muted ? 0 : 0;
+    var iv = setInterval(function () {
+      var k = Math.min((Date.now() - t0) / ms, 1);
+      setVol(muted ? 0 : k * endValue);
+      if (k === 1) clearInterval(iv);
+    }, 60);
+  }
+
+  var yt = { player: null, ready: false };
+
+  if (ytId) {
+    window.onYouTubeIframeAPIReady = function () {
+      yt.player = new YT.Player("ytHost", {
+        height: "1", width: "1",
+        videoId: ytId,
+        playerVars: {
+          autoplay: 0, controls: 0, disablekb: 1, fs: 0,
+          modestbranding: 1, playsinline: 1, rel: 0,
+          loop: 1, playlist: ytId
+        },
+        events: {
+          onReady: function () {
+            yt.ready = true;
+            yt.player.setVolume(0);
+            soundBtn.hidden = false;
+            if (wantsPlay) {
+              yt.player.playVideo();
+              fadeTo(function (v) { yt.player.setVolume(Math.round(v * 100)); }, target, 2600);
+            }
+          },
+          onError: function () {
+            // embedding blocked for this video — fall back to a local file if one is configured
+            yt.player = null;
+            if (has(WEDDING.musicSrc)) startNativeAudio();
+          }
+        }
+      });
+    };
+  }
+
+  function startNativeAudio() {
     if (!has(WEDDING.musicSrc)) return;
     audio.src = WEDDING.musicSrc;
     audio.volume = 0;
-    var target = typeof WEDDING.musicVolume === "number" ? WEDDING.musicVolume : 0.55;
     var p = audio.play();
     if (p && p.catch) p.catch(function () { /* browser blocked it — the mute button still works */ });
-
-    var t0 = Date.now();
-    var fade = setInterval(function () {
-      var k = Math.min((Date.now() - t0) / 2600, 1);
-      audio.volume = muted ? 0 : k * target;
-      if (k === 1) clearInterval(fade);
-    }, 60);
-
+    fadeTo(function (v) { audio.volume = v; }, target, 2600);
     soundBtn.hidden = false;
+  }
+
+  function startMusic() {
+    wantsPlay = true;
+    if (ytId) {
+      if (yt.ready && yt.player) {
+        yt.player.playVideo();
+        fadeTo(function (v) { yt.player.setVolume(Math.round(v * 100)); }, target, 2600);
+      }
+      // if not ready yet, onReady above will start it as soon as the player loads
+    } else {
+      startNativeAudio();
+    }
   }
 
   soundBtn.addEventListener("click", function () {
     muted = !muted;
-    audio.muted = muted;
     soundBtn.setAttribute("aria-pressed", muted ? "false" : "true");
     soundBtn.setAttribute("aria-label", muted ? "Unmute music" : "Mute music");
-    if (!muted && audio.paused) audio.play().catch(function () {});
+
+    if (yt.player) {
+      if (muted) { yt.player.mute(); } else { yt.player.unMute(); yt.player.setVolume(Math.round(target * 100)); if (yt.player.getPlayerState() !== 1) yt.player.playVideo(); }
+    } else {
+      audio.muted = muted;
+      if (!muted && audio.paused && audio.src) audio.play().catch(function () {});
+    }
   });
 
   /* ───────────── the curtain reveal ───────────── */
