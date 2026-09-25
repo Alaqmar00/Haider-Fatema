@@ -60,7 +60,7 @@ const WEDDING = {
      Paste a YouTube / YouTube Music link here and the site will
      stream it quietly through YouTube's own player — no file
      needed. Leave it empty to use a local file instead (below).  */
-  youtubeMusicUrl: "https://music.youtube.com/watch?v=G-pggteH9Ak&si=ECmapYajIbKNSQf0",
+  youtubeMusicUrl: "https://music.youtube.com/watch?v=G-pggteH9Ak&si=2-KmiTEV1ko9m7lr",
 
   /* Only used if youtubeMusicUrl above is left empty. Drop your
      track into the assets folder with this exact name, or change
