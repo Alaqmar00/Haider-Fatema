@@ -45,6 +45,11 @@
   var target = typeof WEDDING.musicVolume === "number" ? WEDDING.musicVolume : 0.55;
   var wantsPlay = false;
 
+  // Always surface the mute/sound control within a few seconds, even if the
+  // YouTube embed never initialises (blocked script, offline API, etc.) —
+  // that guarantees a manual way to start audio exists no matter what.
+  setTimeout(function () { soundBtn.hidden = false; }, 3500);
+
   function youtubeId(url) {
     if (!has(url)) return null;
     var m = url.match(/[?&]v=([\w-]{11})/) || url.match(/youtu\.be\/([\w-]{11})/) || url.match(/\/embed\/([\w-]{11})/);
@@ -67,7 +72,7 @@
   if (ytId) {
     window.onYouTubeIframeAPIReady = function () {
       yt.player = new YT.Player("ytHost", {
-        height: "1", width: "1",
+        height: "200", width: "200",
         videoId: ytId,
         playerVars: {
           autoplay: 0, controls: 0, disablekb: 1, fs: 0,
@@ -121,9 +126,18 @@
     muted = !muted;
     soundBtn.setAttribute("aria-pressed", muted ? "false" : "true");
     soundBtn.setAttribute("aria-label", muted ? "Unmute music" : "Mute music");
+    wantsPlay = true;
 
     if (yt.player) {
-      if (muted) { yt.player.mute(); } else { yt.player.unMute(); yt.player.setVolume(Math.round(target * 100)); if (yt.player.getPlayerState() !== 1) yt.player.playVideo(); }
+      try {
+        if (muted) {
+          yt.player.mute();
+        } else {
+          yt.player.unMute();
+          yt.player.setVolume(Math.round(target * 100));
+          if (yt.player.getPlayerState() !== 1) yt.player.playVideo();
+        }
+      } catch (err) { /* player not fully ready yet — next click will work */ }
     } else {
       audio.muted = muted;
       if (!muted && audio.paused && audio.src) audio.play().catch(function () {});
@@ -171,7 +185,7 @@
       setTimeout(onSettled, 250);
     } else {
       curtainLeft.addEventListener("transitionend", onSettled);
-      setTimeout(onSettled, 3400); // fallback in case transitionend never fires
+      setTimeout(onSettled, 1400); // fallback in case transitionend never fires
     }
   }
 
