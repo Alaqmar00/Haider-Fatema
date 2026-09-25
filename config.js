@@ -65,7 +65,7 @@ const WEDDING = {
   /* Only used if youtubeMusicUrl above is left empty. Drop your
      track into the assets folder with this exact name, or change
      the path to match your file.                                 */
-  musicSrc: "assets/wedding-music.mp3",
+  musicSrc: "",
 
   musicVolume: 0.55
 };

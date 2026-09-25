@@ -76,8 +76,7 @@
         videoId: ytId,
         playerVars: {
           autoplay: 0, controls: 0, disablekb: 1, fs: 0,
-          modestbranding: 1, playsinline: 1, rel: 0,
-          loop: 1, playlist: ytId
+          modestbranding: 1, playsinline: 1, rel: 0, start: 5
         },
         events: {
           onReady: function () {
@@ -85,8 +84,15 @@
             yt.player.setVolume(0);
             soundBtn.hidden = false;
             if (wantsPlay) {
+              yt.player.seekTo(5, true);
               yt.player.playVideo();
               fadeTo(function (v) { yt.player.setVolume(Math.round(v * 100)); }, target, 2600);
+            }
+          },
+          onStateChange: function (e) {
+            if (e.data === YT.PlayerState.ENDED) {
+              yt.player.seekTo(5, true);
+              yt.player.playVideo();
             }
           },
           onError: function () {
@@ -113,10 +119,11 @@
     wantsPlay = true;
     if (ytId) {
       if (yt.ready && yt.player) {
+        yt.player.seekTo(5, true);
         yt.player.playVideo();
         fadeTo(function (v) { yt.player.setVolume(Math.round(v * 100)); }, target, 2600);
       }
-      // if not ready yet, onReady above will start it as soon as the player loads
+      // if not ready yet, onReady above will start it (from 5s) as soon as the player loads
     } else {
       startNativeAudio();
     }
@@ -135,7 +142,10 @@
         } else {
           yt.player.unMute();
           yt.player.setVolume(Math.round(target * 100));
-          if (yt.player.getPlayerState() !== 1) yt.player.playVideo();
+          if (yt.player.getPlayerState() !== 1) {
+            yt.player.seekTo(5, true);
+            yt.player.playVideo();
+          }
         }
       } catch (err) { /* player not fully ready yet — next click will work */ }
     } else {
