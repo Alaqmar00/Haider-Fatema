@@ -95,13 +95,29 @@
               yt.player.playVideo();
             }
           },
-          onError: function () {
+          onError: function (e) {
             // embedding blocked for this video — fall back to a local file if one is configured
+            console.warn("[wedding music] YouTube refused to embed this video (error code " + (e && e.data) + "). This usually means the video's owner has disabled embedding — no code fix can work around that; the reliable option at that point is a real audio file in assets/.");
             yt.player = null;
             if (has(WEDDING.musicSrc)) startNativeAudio();
           }
         }
       });
+
+      // Watchdog: if playback still hasn't actually started a few seconds
+      // after the ribbon was tapped, something is silently failing (most
+      // often: this video has embedding disabled). Surfaces a clear reason
+      // in the console for debugging rather than staying mysteriously silent.
+      setTimeout(function () {
+        if (wantsPlay && yt.player) {
+          try {
+            var state = yt.player.getPlayerState();
+            if (state !== 1 && state !== 3) {
+              console.warn("[wedding music] Tapped to play, but the YouTube player never reached the 'playing' state (state=" + state + "). If this persists, this specific video likely can't be embedded here.");
+            }
+          } catch (err) {}
+        }
+      }, 5000);
     };
   }
 
