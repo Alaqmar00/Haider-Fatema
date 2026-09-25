@@ -185,7 +185,7 @@
       setTimeout(onSettled, 250);
     } else {
       curtainLeft.addEventListener("transitionend", onSettled);
-      setTimeout(onSettled, 750); // fallback in case transitionend never fires
+      setTimeout(onSettled, 1400); // fallback in case transitionend never fires
     }
   }
 
