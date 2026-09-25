@@ -157,8 +157,19 @@
     // scroll/touch while it waited for the slide to finish.
     stage.style.pointerEvents = "none";
     document.body.classList.remove("is-closed");
+    document.body.style.overflow = "";
+    document.body.style.position = "";
     window.scrollTo(0, 0);
     observeReveals();
+
+    // Some mobile browsers leave the scroll engine "asleep" right after a
+    // position:fixed element is removed — the very first swipe gets
+    // silently ignored even though nothing is blocking it anymore. Nudging
+    // the scroll position by 1px and back wakes it up reliably.
+    requestAnimationFrame(function () {
+      window.scrollTo(0, 1);
+      requestAnimationFrame(function () { window.scrollTo(0, 0); });
+    });
 
     stage.classList.add("is-opening");
     startMusic();
@@ -185,7 +196,7 @@
       setTimeout(onSettled, 250);
     } else {
       curtainLeft.addEventListener("transitionend", onSettled);
-      setTimeout(onSettled, 1400); // fallback in case transitionend never fires
+      setTimeout(onSettled, 2000); // fallback in case transitionend never fires
     }
   }
 
